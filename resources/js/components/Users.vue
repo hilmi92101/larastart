@@ -60,13 +60,85 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                  </div>
-                 <div class="modal-body">
-                    ...
-                 </div>
-                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Create</button>
-                 </div>
+
+                 <form @submit.prevent="createUser">
+                     <div class="modal-body">
+
+                        <!-- Name -->
+                        <div class="form-group">
+                            <input 
+                                v-model="form.name" 
+                                type="text" 
+                                name="name"
+                                class="form-control" 
+                                :class="{ 'is-invalid': form.errors.has('name') }"
+                                placeholder="Name" 
+                            >
+                            <has-error :form="form" field="name"></has-error>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <input 
+                                v-model="form.email" 
+                                type="text" 
+                                name="email"
+                                class="form-control" 
+                                :class="{ 'is-invalid': form.errors.has('email') }"
+                                placeholder="Email" 
+                            >
+                            <has-error :form="form" field="email"></has-error>
+                        </div>
+
+                        <!-- Bio -->
+                        <div class="form-group">
+                            <textarea
+                                v-model="form.bio" 
+                                name="bio"
+                                class="form-control" 
+                                :class="{ 'is-invalid': form.errors.has('bio') }"
+                                placeholder="Short bio for user (Optional)" 
+                            >
+                            </textarea> 
+                            <has-error :form="form" field="bio"></has-error>
+                        </div>
+
+                        <!-- Type -->
+                        <div class="form-group">
+                            <select
+                                v-model="form.type" 
+                                name="type"
+                                class="form-control" 
+                                :class="{ 'is-invalid': form.errors.has('type') }"
+                            >
+                                <option value="admin">Admin</option>
+                                <option value="user">Standard User</option>
+                                <option value="admin">Author</option>
+                            </select> 
+                            <has-error :form="form" field="type"></has-error>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <input 
+                                v-model="form.password" 
+                                type="text" 
+                                name="password"
+                                class="form-control" 
+                                :class="{ 'is-invalid': form.errors.has('password') }"
+                                placeholder="Password" 
+                            >
+                            <has-error :form="form" field="password"></has-error>
+                        </div>
+
+
+                     </div>
+
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Create</button>
+                     </div>
+                 </form>
               </div>
            </div>
         </div>
@@ -78,6 +150,34 @@
 
 <script>
     export default {
+
+        data() {
+
+            return {
+
+                form: new Form({
+
+                    name: '',
+                    email: '',
+                    password: '',
+                    type: 'admin',
+                    bio: '',
+                    photo: '',
+                }),
+            }
+
+        }, 
+
+        methods: {
+
+            createUser(){
+
+                this.form.post('/api/user');
+                    
+            }
+
+        },
+
         mounted() {
             console.log('Component mounted.')
         }
