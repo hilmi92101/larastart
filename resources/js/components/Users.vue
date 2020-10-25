@@ -122,7 +122,7 @@
                         <div class="form-group">
                             <input 
                                 v-model="form.password" 
-                                type="text" 
+                                type="password" 
                                 name="password"
                                 class="form-control" 
                                 :class="{ 'is-invalid': form.errors.has('password') }"
@@ -136,7 +136,7 @@
 
                      <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
                      </div>
                  </form>
               </div>
