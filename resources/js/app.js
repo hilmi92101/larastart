@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router';
 import { Form, HasError, AlertError } from 'vform';
+import moment from 'moment';
 
 require('./bootstrap');
 
@@ -19,6 +20,14 @@ const routes = [
 const router = new VueRouter({
 	mode: 'history',
 	routes // short for `routes: routes`
+});
+
+// GLOBAL VUE FILTER
+Vue.filter('upText', function(text){
+	return text.charAt(0).toUpperCase() + text.slice(1);
+});
+Vue.filter('myDate', function(createdDate){
+	return moment(createdDate).format('MMMM Do YYYY');
 });
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
