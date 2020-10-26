@@ -180,14 +180,16 @@
                 .then(function (response) {
                     //console.log(response.data);
                     //console.log(response.data.data);
-                    self.users = response.data.data
+                    self.users = response.data.data;
+                    self.$Progress.finish();
                 })
                 .catch(function (error) {
+                    self.$Progress.fail();
                 });
             },
 
             createUser(){
-
+                this.$Progress.start();
                 this.form.post('/api/user');
                 this.loadUsers();
                     
