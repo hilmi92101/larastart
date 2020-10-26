@@ -189,9 +189,14 @@
             },
 
             createUser(){
+                const self = this;
                 this.$Progress.start();
-                this.form.post('/api/user');
-                this.loadUsers();
+                this.form.post('/api/user').then(function (response) {
+                    //console.log(response.data);
+                    self.users = response.data.data;
+                }).catch(function (error) {
+                    self.$Progress.fail();
+                });
                     
             },
 

@@ -63,7 +63,7 @@ class UserController extends Controller
         }*/
 
  
-        return User::create([
+        User::create([
 
             "name" => $request->name,
             "email" => $request->email,
@@ -72,8 +72,9 @@ class UserController extends Controller
             "bio" => $request->bio,
             "photo" => $request->photo,
 
-
         ]);
+
+        return User::latest()->paginate(10);
 
     }
 
