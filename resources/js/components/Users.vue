@@ -194,10 +194,27 @@
                 this.form.post('/api/user').then(function (response) {
                     //console.log(response.data);
                     self.users = response.data.data;
+                    $('#addNew').modal('hide');
+                    self.resetAddUserModal(self);
+                    toast.fire({
+                        icon: 'success',
+                        title: 'User created successfully'
+                    });
                 }).catch(function (error) {
                     self.$Progress.fail();
                 });
                     
+            },
+
+            resetAddUserModal(self) {
+            
+                self.form.name = '';
+                self.form.email = '';
+                self.form.password = '';
+                self.form.type = 'admin';
+                self.form.bio = '';
+                self.form.photo = '';
+
             },
 
         },
