@@ -1971,6 +1971,7 @@ __webpack_require__.r(__webpack_exports__);
           icon: 'success',
           title: 'User created successfully'
         });
+        self.$Progress.finish();
       })["catch"](function (error) {
         self.$Progress.fail();
       });
@@ -1985,7 +1986,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.loadUsers();
+    this.loadUsers(); //setInterval(() => this.loadUsers(), 5000);
   }
 });
 

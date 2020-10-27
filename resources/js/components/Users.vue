@@ -200,6 +200,7 @@
                         icon: 'success',
                         title: 'User created successfully'
                     });
+                    self.$Progress.finish();
                 }).catch(function (error) {
                     self.$Progress.fail();
                 });
@@ -221,6 +222,7 @@
 
         created() {
             this.loadUsers();
+            //setInterval(() => this.loadUsers(), 5000);
         }
     }
 </script>
