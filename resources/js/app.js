@@ -53,6 +53,10 @@ Vue.filter('myDate', function(createdDate){
 	return moment(createdDate).format('MMMM Do YYYY');
 });
 
+// VUE CUSTOM EVENT
+let Fire = new Vue();
+window.Fire = Fire;
+
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 const app = new Vue({

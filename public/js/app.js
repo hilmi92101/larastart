@@ -1963,7 +1963,8 @@ __webpack_require__.r(__webpack_exports__);
       var self = this;
       this.$Progress.start();
       this.form.post('/api/user').then(function (response) {
-        //console.log(response.data);
+        Fire.$emit('AfterCreated'); //console.log(response.data);
+
         self.users = response.data.data;
         $('#addNew').modal('hide');
         self.resetAddUserModal(self);
@@ -1986,7 +1987,14 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.loadUsers(); //setInterval(() => this.loadUsers(), 5000);
+    var _this = this;
+
+    this.loadUsers();
+    Fire.$on('AfterCreated', function () {
+      _this.loadUsers(); // REALLY DON'T LIKE DOING IT LIKE THIS. 2 DATABASE CALL WERE MADE. IT'S BETTER AFTER CREATED USER, RETURN THE LIST OF USER, SO IT WILL BE ONLY ONE DATABASE CALL.
+      // MAYBE LATER CAN FIGURE OUT HOW DOING VUE CUSTOM EVENT LIKE THIS IS MORE BENEFICIAL TO THE PROJECT. FOR NOW, DON'T KNOW WHERE TO APPLY THIS IN A MORE MEANINGFUL WAY.
+
+    }); //setInterval(() => this.loadUsers(), 5000);
   }
 });
 
@@ -79415,7 +79423,10 @@ Vue.filter('upText', function (text) {
 });
 Vue.filter('myDate', function (createdDate) {
   return moment__WEBPACK_IMPORTED_MODULE_2___default()(createdDate).format('MMMM Do YYYY');
-}); //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+}); // VUE CUSTOM EVENT
+
+var Fire = new Vue();
+window.Fire = Fire; //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 var app = new Vue({
   el: '#app',

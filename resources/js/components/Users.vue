@@ -192,6 +192,8 @@
                 const self = this;
                 this.$Progress.start();
                 this.form.post('/api/user').then(function (response) {
+                    Fire.$emit('AfterCreated');
+
                     //console.log(response.data);
                     self.users = response.data.data;
                     $('#addNew').modal('hide');
@@ -222,6 +224,13 @@
 
         created() {
             this.loadUsers();
+            Fire.$on('AfterCreated', () => {
+                this.loadUsers();
+
+                // REALLY DON'T LIKE DOING IT LIKE THIS. 2 DATABASE CALL WERE MADE. IT'S BETTER AFTER CREATED USER, RETURN THE LIST OF USER, SO IT WILL BE ONLY ONE DATABASE CALL.
+
+                // MAYBE LATER CAN FIGURE OUT HOW DOING VUE CUSTOM EVENT LIKE THIS IS MORE BENEFICIAL TO THE PROJECT. FOR NOW, DON'T KNOW WHERE TO APPLY THIS IN A MORE MEANINGFUL WAY.
+            });
             //setInterval(() => this.loadUsers(), 5000);
         }
     }

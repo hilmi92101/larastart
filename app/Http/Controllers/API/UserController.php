@@ -63,7 +63,7 @@ class UserController extends Controller
         }*/
 
  
-        User::create([
+        return User::create([
 
             "name" => $request->name,
             "email" => $request->email,
@@ -74,7 +74,7 @@ class UserController extends Controller
 
         ]);
 
-        return User::latest()->paginate(10);
+        //return User::latest()->paginate(10);
 
     }
 
