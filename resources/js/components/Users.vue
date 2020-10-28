@@ -39,7 +39,7 @@
                         <td>
                             <a href="#"><i class="fa fa-edit blue"></i></a>
                             /
-                            <a href="#"><i class="fa fa-trash red"></i></a>
+                            <a href="#" @click="deleteUser(user)"><i class="fa fa-trash red"></i></a>
                         </td>
                     </tr>
 
@@ -191,7 +191,8 @@
             createUser(){
                 const self = this;
                 this.$Progress.start();
-                this.form.post('/api/user').then(function (response) {
+                this.form.post('/api/user')
+                .then(function (response) {
                     Fire.$emit('AfterCreated');
 
                     //console.log(response.data);
@@ -207,6 +208,39 @@
                     self.$Progress.fail();
                 });
                     
+            },
+
+            deleteUser(user){
+
+                const self = this;
+                swal.fire({
+                    title: 'Delete ' + user.name + '?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if(result.isConfirmed){
+
+                            self.form.delete('/api/user/'+user.id)
+                            .then(function (response) {
+
+                                if(response.data.status){
+
+                                    self.users = response.data.users.data;
+                                    swal.fire(
+                                        'Deleted!',
+                                        'User has been deleted.',
+                                        'success'
+                                    );
+                                }
+                                
+                            }).catch(function (error) {
+                            });
+                        }
+                });
             },
 
             resetAddUserModal(self) {
@@ -227,7 +261,7 @@
             Fire.$on('AfterCreated', () => {
                 this.loadUsers();
 
-                // REALLY DON'T LIKE DOING IT LIKE THIS. 2 DATABASE CALL WERE MADE. IT'S BETTER AFTER CREATED USER, RETURN THE LIST OF USER, SO IT WILL BE ONLY ONE DATABASE CALL.
+                // REALLY DON'T LIKE DOING IT LIKE THIS. 2 DATABASE CALLS WERE MADE. IT'S BETTER AFTER CREATED USER, RETURN THE LIST OF USER, SO IT WILL BE ONLY ONE DATABASE CALL.
 
                 // MAYBE LATER CAN FIGURE OUT HOW DOING VUE CUSTOM EVENT LIKE THIS IS MORE BENEFICIAL TO THE PROJECT. FOR NOW, DON'T KNOW WHERE TO APPLY THIS IN A MORE MEANINGFUL WAY.
             });

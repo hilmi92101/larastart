@@ -109,6 +109,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::where('id',$id)->delete();
+
+        $users = User::latest()->paginate(10);
+
+        return [
+
+            "users" => $users,
+            "status" => true
+        ];
     }
 }

@@ -1977,6 +1977,27 @@ __webpack_require__.r(__webpack_exports__);
         self.$Progress.fail();
       });
     },
+    deleteUser: function deleteUser(user) {
+      var self = this;
+      swal.fire({
+        title: 'Delete ' + user.name + '?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          self.form["delete"]('/api/user/' + user.id).then(function (response) {
+            if (response.data.status) {
+              self.users = response.data.users.data;
+              swal.fire('Deleted!', 'User has been deleted.', 'success');
+            }
+          })["catch"](function (error) {});
+        }
+      });
+    },
     resetAddUserModal: function resetAddUserModal(self) {
       self.form.name = '';
       self.form.email = '';
@@ -1991,7 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.loadUsers();
     Fire.$on('AfterCreated', function () {
-      _this.loadUsers(); // REALLY DON'T LIKE DOING IT LIKE THIS. 2 DATABASE CALL WERE MADE. IT'S BETTER AFTER CREATED USER, RETURN THE LIST OF USER, SO IT WILL BE ONLY ONE DATABASE CALL.
+      _this.loadUsers(); // REALLY DON'T LIKE DOING IT LIKE THIS. 2 DATABASE CALLS WERE MADE. IT'S BETTER AFTER CREATED USER, RETURN THE LIST OF USER, SO IT WILL BE ONLY ONE DATABASE CALL.
       // MAYBE LATER CAN FIGURE OUT HOW DOING VUE CUSTOM EVENT LIKE THIS IS MORE BENEFICIAL TO THE PROJECT. FOR NOW, DON'T KNOW WHERE TO APPLY THIS IN A MORE MEANINGFUL WAY.
 
     }); //setInterval(() => this.loadUsers(), 5000);
@@ -63724,7 +63745,24 @@ var render = function() {
                       _vm._v(_vm._s(_vm._f("myDate")(user.created_at)))
                     ]),
                     _vm._v(" "),
-                    _vm._m(2, true)
+                    _c("td", [
+                      _vm._m(2, true),
+                      _vm._v(
+                        "\n                        /\n                        "
+                      ),
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteUser(user)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-trash red" })]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -64049,14 +64087,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-edit blue" })
-      ]),
-      _vm._v("\n                        /\n                        "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-trash red" })
-      ])
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fa fa-edit blue" })
     ])
   },
   function() {
