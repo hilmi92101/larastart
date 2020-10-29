@@ -8,7 +8,7 @@
                     <h3 class="card-title">Users Table</h3>
 
                     <div class="card-tools">
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addNew">
+                        <button class="btn btn-success" @click="newModal">
                             Add New
                             <i class="fas fa-user-plus fa-fw"></i>
                         </button>
@@ -37,7 +37,7 @@
                         <td>{{ user.type | upText }}</td>
                         <td>{{ user.created_at | myDate }}</td>
                         <td>
-                            <a href="#"><i class="fa fa-edit blue"></i></a>
+                            <a href="#"><i class="fa fa-edit blue" @click="editModal(user)"></i></a>
                             /
                             <a href="#" @click="deleteUser(user)"><i class="fa fa-trash red"></i></a>
                         </td>
@@ -188,6 +188,17 @@
                 });
             },
 
+            newModal(){
+                this.form.reset(); // the vform way to resrt form
+                $('#addNew').modal('show');
+            },
+
+            editModal(user){
+                this.form.reset();
+                $('#addNew').modal('show');
+                this.form.fill(user);
+            },
+
             createUser(){
                 const self = this;
                 this.$Progress.start();
@@ -222,13 +233,12 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
-                        if(result.isConfirmed){
 
+                        //console.log(result);
+                        if(result.isConfirmed){
                             self.form.delete('/api/user/'+user.id)
                             .then(function (response) {
-
                                 if(response.data.status){
-
                                     self.users = response.data.users.data;
                                     swal.fire(
                                         'Deleted!',
@@ -236,7 +246,6 @@
                                         'success'
                                     );
                                 }
-                                
                             }).catch(function (error) {
                             });
                         }
