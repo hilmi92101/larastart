@@ -1942,6 +1942,7 @@ __webpack_require__.r(__webpack_exports__);
       editmode: false,
       users: {},
       form: new Form({
+        id: '',
         name: '',
         email: '',
         password: '',
@@ -1965,7 +1966,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     newModal: function newModal() {
       this.editmode = false;
-      this.form.reset(); // the vform way to resrt form
+      this.form.reset(); // the vform way to reset form
 
       $('#addNew').modal('show');
     },
@@ -1994,7 +1995,21 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateUser: function updateUser() {
-      console.log('user updatingggg');
+      var self = this;
+      this.$Progress.start();
+      this.form.put('/api/user/' + this.form.id).then(function (response) {
+        //console.log(response.data);
+        self.users = response.data.users.data;
+        $('#addNew').modal('hide');
+        self.resetAddUserModal(self);
+        toast.fire({
+          icon: 'success',
+          title: 'User updated successfully'
+        });
+        self.$Progress.finish();
+      })["catch"](function (error) {
+        self.$Progress.fail();
+      });
     },
     deleteUser: function deleteUser(user) {
       var self = this;

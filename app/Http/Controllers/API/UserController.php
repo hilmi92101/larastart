@@ -33,11 +33,9 @@ class UserController extends Controller
     {
 
         $this->validate($request, [
-
             "name" => 'required|string|max:191',
             "email" => 'required|string|email|max:191|unique:users',
             "password" => 'required|string|min:6',
-
         ]);
 
         /*$val_rules =  [
@@ -98,7 +96,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $this->validate($request, [
+            "name" => 'required|string|max:191',
+            "email" => 'required|string|email|max:191|unique:users,email,' . $user->id,
+            "password" => 'string|min:6',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        $users =  User::latest()->paginate(10);
+        $data = [
+            'status' => true,
+            'users' => $users,
+        ];
+        return response()->json($data); 
     }
 
     /**

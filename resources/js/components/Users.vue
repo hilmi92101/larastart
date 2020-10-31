@@ -165,6 +165,7 @@
 
                 form: new Form({
 
+                    id: '',
                     name: '',
                     email: '',
                     password: '',
@@ -194,7 +195,7 @@
 
             newModal(){
                 this.editmode = false;
-                this.form.reset(); // the vform way to resrt form
+                this.form.reset(); // the vform way to reset form
                 $('#addNew').modal('show');
             },
 
@@ -228,8 +229,24 @@
             },
 
             updateUser(){
+                const self = this;
+                this.$Progress.start();
+                this.form.put('/api/user/'+ this.form.id)
+                .then(function (response) {
 
-                console.log('user updatingggg');
+                    //console.log(response.data);
+                    self.users = response.data.users.data;
+                    $('#addNew').modal('hide');
+                    self.resetAddUserModal(self);
+                    toast.fire({
+                        icon: 'success',
+                        title: 'User updated successfully'
+                    });
+                    self.$Progress.finish();
+                }).catch(function (error) {
+                    self.$Progress.fail();
+                });
+                
             },
 
             deleteUser(user){
