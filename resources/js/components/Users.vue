@@ -118,7 +118,7 @@
                             >
                                 <option value="admin">Admin</option>
                                 <option value="user">Standard User</option>
-                                <option value="admin">Author</option>
+                                <option value="author">Author</option>
                             </select> 
                             <has-error :form="form" field="type"></has-error>
                         </div>
@@ -234,7 +234,7 @@
                 this.form.put('/api/user/'+ this.form.id)
                 .then(function (response) {
 
-                    //console.log(response.data);
+                    console.log(response.data);
                     self.users = response.data.users.data;
                     $('#addNew').modal('hide');
                     self.resetAddUserModal(self);

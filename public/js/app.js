@@ -1998,7 +1998,7 @@ __webpack_require__.r(__webpack_exports__);
       var self = this;
       this.$Progress.start();
       this.form.put('/api/user/' + this.form.id).then(function (response) {
-        //console.log(response.data);
+        console.log(response.data);
         self.users = response.data.users.data;
         $('#addNew').modal('hide');
         self.resetAddUserModal(self);
@@ -64043,7 +64043,7 @@ var render = function() {
                               _vm._v("Standard User")
                             ]),
                             _vm._v(" "),
-                            _c("option", { attrs: { value: "admin" } }, [
+                            _c("option", { attrs: { value: "author" } }, [
                               _vm._v("Author")
                             ])
                           ]
